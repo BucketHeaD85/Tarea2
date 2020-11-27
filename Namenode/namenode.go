@@ -101,6 +101,7 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 		//fmt.Println("Current proposal:" + direcciones[current])
 		pos := verificarDataNode(current)
 		request.GetAsignacion()[i].PosDireccion = pos
+		fmt.Println(direcciones[pos])
 		f.WriteString("Chunk " + strconv.Itoa(i+1) + ": " + direcciones[pos] + "\n")
 	}
 	disponible = true
@@ -112,7 +113,7 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 func verificarDataNode(posDireccion int64) int64 {
 	nodosDisponibles := 3
 	factible := true
-	_, err := grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
+	con, err := grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
 	if err != nil { //el nodo propuesto no esta disponible
 		for {
 			flags[posDireccion] = false
@@ -142,17 +143,19 @@ func verificarDataNode(posDireccion int64) int64 {
 				posDireccion = (posDireccion + int64(2)) % 3
 			}
 
-			_, err = grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
+			con, err = grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
 			if err == nil {
 				break
 			} // se ha encontrado un reemplazo
 		}
 
 		if factible {
+			con.Close()
 			return posDireccion
 		}
 		return int64(-1) //no existe nodo factible para almacenar el chunk
 	}
+	con.Close()
 	return posDireccion //se aprueba el nodo propuesto originalmente
 
 }
