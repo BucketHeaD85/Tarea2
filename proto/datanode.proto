@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto;
+
+message Chunk{
+    bytes Contenido = 1;
+}
+
+enum CodigoStatusSubida{
+    Desconocido = 0;
+    Exitoso = 1;
+    Fallido = 2;
+}
+
+message StatusSubida{
+    string Mensaje = 1;
+    CodigoStatusSubida Codigo = 2;
+}
+
+message Setup{
+    int64 numChunks = 1;
+    string titulo = 2;
+}
+
+service ServicioSubida{
+    rpc SubirArchivo(stream Chunk) returns (StatusSubida);
+    rpc AcusoEnvio(Setup) returns (Setup);
+}
