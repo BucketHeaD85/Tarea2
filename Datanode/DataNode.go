@@ -59,13 +59,12 @@ var condNodoC = sync.NewCond(mutexNodoC)
 */
 
 //Direcciones ip relevantes
-//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
-var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+//var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
 //var disponibles = [3]bool{true,true,true}
-var nameNode = "localhost:50055"
-
-//var namenode = "10.6.40.249:50058"
+//var nameNode = "localhost:50055"
+var nameNode = "10.6.40.249:50055"
 
 func gestionEnvios(cliente clientGRPC, nodo int, nombre string) {
 	cliente = preparar(nodo)
@@ -131,16 +130,17 @@ func preparar(nodo int) clientGRPC {
 }
 
 func main() {
-
+/*
 	fmt.Println("Puerto")
 
 	_, err := fmt.Scanf("%d", &eleccion)
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	//eleccion = 0
-	var puerto string
+*/
+	eleccion = 1
+	var puerto = ":50053"
+/*
 	if eleccion == 0 {
 		puerto = ":50052"
 	} else {
@@ -150,7 +150,7 @@ func main() {
 			puerto = ":50054"
 		}
 	}
-
+*/
 	listener, err := net.Listen("tcp", puerto)
 	if err != nil {
 		log.Fatalf("failed to listen on port: %v", err)
