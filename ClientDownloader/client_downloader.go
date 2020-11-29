@@ -14,11 +14,13 @@ import (
 	"google.golang.org/grpc"
 )
 
-//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
-var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
 
-//var namenode = "10.6.40.249:50058"
-var namenode = "localhost:50055"
+//var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+
+var namenode = "10.6.40.249:50055"
+
+//var namenode = "localhost:50055"
 
 type datanodeGRPC struct {
 	conn      *grpc.ClientConn
@@ -131,7 +133,7 @@ func main() {
 			log.Fatalf("Rip")
 		}
 
-		ioutil.WriteFile(nombre, chunk.Contenido, os.ModeAppend)
+		ioutil.WriteFile(nombre, chunk.GetContenido(), os.ModeAppend)
 
 		currentChunkFileName := titulo + "_" + strconv.FormatInt(nChunk, 10)
 

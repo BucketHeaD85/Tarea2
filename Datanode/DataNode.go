@@ -60,10 +60,12 @@ var condNodoC = sync.NewCond(mutexNodoC)
 
 //Direcciones ip relevantes
 var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+
 //var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
 //var disponibles = [3]bool{true,true,true}
 //var nameNode = "localhost:50055"
+
 var nameNode = "10.6.40.249:50055"
 
 func gestionEnvios(cliente clientGRPC, nodo int, nombre string) {
@@ -130,27 +132,28 @@ func preparar(nodo int) clientGRPC {
 }
 
 func main() {
-/*
-	fmt.Println("Puerto")
+	/*
+		fmt.Println("Puerto")
 
-	_, err := fmt.Scanf("%d", &eleccion)
-	if err != nil {
-		fmt.Println(err)
-	}
-*/
+		_, err := fmt.Scanf("%d", &eleccion)
+		if err != nil {
+			fmt.Println(err)
+		}
+	*/
 	eleccion = 1
 	var puerto = ":50053"
-/*
-	if eleccion == 0 {
-		puerto = ":50052"
-	} else {
-		if eleccion == 1 {
-			puerto = ":50053"
+	/*
+		var puerto string
+		if eleccion == 0 {
+			puerto = ":50052"
 		} else {
-			puerto = ":50054"
+			if eleccion == 1 {
+				puerto = ":50053"
+			} else {
+				puerto = ":50054"
+			}
 		}
-	}
-*/
+	*/
 	listener, err := net.Listen("tcp", puerto)
 	if err != nil {
 		log.Fatalf("failed to listen on port: %v", err)
@@ -165,17 +168,6 @@ func main() {
 	}
 
 }
-
-/*
-func conectarNameNode() {
-
-	conn, err := grpc.Dial(nameNode, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("Failed to connect: %s", err)
-	}
-	client := proto.NewServicioNameNodeClient(conn)
-}
-*/
 
 func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error) {
 	var (
@@ -200,6 +192,18 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 	}
 	defer stream.CloseSend()
 
+	req := &proto.Chunk{
+		Data: &proto.Chunk_Nombre{
+			Nombre: f,
+		},
+	}
+
+	err = stream.Send(req)
+
+	if err != nil {
+		log.Fatalf("Cannot send file info")
+	}
+
 	//stats.StartedAt = time.Now()
 	buf = make([]byte, c.chunkSize)
 	for writing {
@@ -215,13 +219,13 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 			return
 		}
 
-		err = stream.Send(&proto.Chunk{
-			Contenido: buf[:n],
-		})
-		if err != nil {
-			log.Fatalf("Failed to send chunk over stream:%v", err)
-			return
+		req := &proto.Chunk{
+			Data: &proto.Chunk_Contenido{
+				Contenido: buf[:n],
+			},
 		}
+
+		err = stream.Send(req)
 		fmt.Println("Chunk enviado a data node")
 	}
 
@@ -307,11 +311,17 @@ func (server *server) AcusoEnvio(ctx context.Context, nChunks *proto.Setup) (*pr
 	contadorChunks = nChunks.GetNumChunks()
 	titulo = nChunks.GetTitulo()
 	totalChunks = contadorChunks
-	indice = 0
+	//indice = 0
 	return &proto.Setup{NumChunks: contadorChunks, Titulo: titulo}, nil
 }
 
 func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServer) (err error) {
+	req, err := stream.Recv()
+	if err != nil {
+		log.Fatalf("Error al recibir informacion sobre el archivo: %v", err)
+		return nil
+	}
+	nombre := req.GetNombre()
 	for {
 		recepcion, e := stream.Recv()
 		if e != nil {
@@ -322,7 +332,8 @@ func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServe
 			log.Fatalf("failed unexpectadely while reading chunks from stream")
 			return
 		}
-		newFileName := titulo + "_" + strconv.Itoa(indice)
+		newFileName := nombre
+		fmt.Println("Filename:" + newFileName)
 		indice++
 		//contadorChunks++
 		_, err = os.Create(newFileName)
@@ -332,7 +343,7 @@ func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServe
 			os.Exit(1)
 		}
 
-		ioutil.WriteFile(newFileName, recepcion.Contenido, os.ModeAppend)
+		ioutil.WriteFile(newFileName, recepcion.GetContenido(), os.ModeAppend)
 
 	}
 
@@ -346,103 +357,11 @@ END:
 	})
 	contadorChunks--
 	if contadorChunks == 0 {
+		indice = 0
 		//fmt.Println("Going to the other side")
 		generarPropuesta(totalChunks)
 		condChunk.L.Unlock()
 	}
-	//*************************************************************************
-	/*
-		newFileName := "NEWbigfile.pdf"
-		_, err = os.Create(newFileName)
-
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		//set the newFileName file to APPEND MODE!!
-		// open files r and w
-
-		file, err := os.OpenFile(newFileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// IMPORTANT! do not defer a file.Close when opening a file for APPEND mode!
-		// defer file.Close()
-
-		// just information on which part of the new file we are appending
-		//var writePosition int64 = 0
-
-		for i := uint64(1); i < contadorChunks; i++ {
-
-			//read a chunk
-			currentChunkFileName := "bigfile_" + strconv.FormatUint(i, 10)
-
-			newFileChunk, err := os.Open(currentChunkFileName)
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-			defer newFileChunk.Close()
-
-			chunkInfo, err := newFileChunk.Stat()
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-			// calculate the bytes size of each chunk
-			// we are not going to rely on previous data and constant
-
-			var chunkSize int64 = chunkInfo.Size()
-			chunkBufferBytes := make([]byte, chunkSize)
-
-			fmt.Println("Appending at position : [", writePosition, "] bytes")
-			writePosition = writePosition + chunkSize
-
-			// read into chunkBufferBytes
-			reader := bufio.NewReader(newFileChunk)
-			_, err = reader.Read(chunkBufferBytes)
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-			// DON't USE ioutil.WriteFile -- it will overwrite the previous bytes!
-			// write/save buffer to disk
-			//ioutil.WriteFile(newFileName, chunkBufferBytes, os.ModeAppend)
-
-			n, err := file.Write(chunkBufferBytes)
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-			file.Sync() //flush to disk
-
-			// free up the buffer for next cycle
-			// should not be a problem if the chunk size is small, but
-			// can be resource hogging if the chunk size is huge.
-			// also a good practice to clean up your own plate after eating
-
-			chunkBufferBytes = nil // reset or empty our buffer
-
-			fmt.Println("Written ", n, " bytes")
-
-			fmt.Println("Recombining part [", contadorChunks, "] into : ", newFileName)
-		}
-
-		// now, we close the newFileName
-		file.Close()
-	*/
 	return
 
 }
@@ -469,9 +388,13 @@ func (server *server) DescargarArchivo(request *proto.Solicitud, stream proto.Se
 		return err
 	}
 
-	err = stream.Send(&proto.Chunk{
-		Contenido: buf[:n],
-	})
+	req := &proto.Chunk{
+		Data: &proto.Chunk_Contenido{
+			Contenido: buf[:n],
+		},
+	}
+
+	err = stream.Send(req)
 
 	if err != nil {
 		log.Fatalf("Failed to send chunk over stream:%v", err)

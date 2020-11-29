@@ -16,13 +16,11 @@ import (
 )
 
 //Direcciones ip relevantes
-//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
-var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+
+//var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
 //var disponibles = [3]bool{true,true,true}
-var nameNode = "localhost:50055"
-
-//var namenode = "10.6.40.249:50058"
 
 type clientGRPC struct {
 	conn      *grpc.ClientConn
@@ -72,6 +70,19 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 
 	//stats.StartedAt = time.Now()
 	buf = make([]byte, c.chunkSize)
+
+	req := &proto.Chunk{
+		Data: &proto.Chunk_Nombre{
+			Nombre: f,
+		},
+	}
+
+	err = stream.Send(req)
+
+	if err != nil {
+		log.Fatalf("Cannot send file info")
+	}
+
 	for writing {
 		n, err = file.Read(buf)
 		if err != nil {
@@ -85,14 +96,19 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 			return
 		}
 
-		err = stream.Send(&proto.Chunk{
-			Contenido: buf[:n],
-		})
+		req := &proto.Chunk{
+			Data: &proto.Chunk_Contenido{
+				Contenido: buf[:n],
+			},
+		}
+
+		err = stream.Send(req)
 		if err != nil {
 			log.Fatalf("Failed to send chunk over stream:%v", err)
 			return
 		}
 		fmt.Println("Chunk enviado a data node")
+
 	}
 
 	//stats.FinishedAt = time.Now()
