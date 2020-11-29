@@ -87,7 +87,7 @@ type Propuesta struct {
 	Asignacion []*Asignacion `protobuf:"bytes,1,rep,name=asignacion,proto3" json:"asignacion,omitempty"`
 	Titulo     string        `protobuf:"bytes,2,opt,name=titulo,proto3" json:"titulo,omitempty"`
 	Nchunks    int64         `protobuf:"varint,3,opt,name=Nchunks,proto3" json:"Nchunks,omitempty"`
-	IdNodo     int64         `protobuf:"varint,4,opt,name=IdNodo,proto3" json:"IdNodo,omitempty"`
+	IdNodo     []int64       `protobuf:"varint,4,rep,packed,name=IdNodo,proto3" json:"IdNodo,omitempty"`
 }
 
 func (x *Propuesta) Reset() {
@@ -143,14 +143,14 @@ func (x *Propuesta) GetNchunks() int64 {
 	return 0
 }
 
-func (x *Propuesta) GetIdNodo() int64 {
+func (x *Propuesta) GetIdNodo() []int64 {
 	if x != nil {
 		return x.IdNodo
 	}
-	return 0
+	return nil
 }
 
-type Solicitud struct {
+type Request struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -158,8 +158,8 @@ type Solicitud struct {
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 }
 
-func (x *Solicitud) Reset() {
-	*x = Solicitud{}
+func (x *Request) Reset() {
+	*x = Request{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_namenode_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -167,13 +167,13 @@ func (x *Solicitud) Reset() {
 	}
 }
 
-func (x *Solicitud) String() string {
+func (x *Request) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Solicitud) ProtoMessage() {}
+func (*Request) ProtoMessage() {}
 
-func (x *Solicitud) ProtoReflect() protoreflect.Message {
+func (x *Request) ProtoReflect() protoreflect.Message {
 	mi := &file_namenode_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -185,16 +185,110 @@ func (x *Solicitud) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Solicitud.ProtoReflect.Descriptor instead.
-func (*Solicitud) Descriptor() ([]byte, []int) {
+// Deprecated: Use Request.ProtoReflect.Descriptor instead.
+func (*Request) Descriptor() ([]byte, []int) {
 	return file_namenode_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *Solicitud) GetId() int64 {
+func (x *Request) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
+}
+
+type Libro struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Titulo string `protobuf:"bytes,1,opt,name=titulo,proto3" json:"titulo,omitempty"`
+}
+
+func (x *Libro) Reset() {
+	*x = Libro{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_namenode_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Libro) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Libro) ProtoMessage() {}
+
+func (x *Libro) ProtoReflect() protoreflect.Message {
+	mi := &file_namenode_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Libro.ProtoReflect.Descriptor instead.
+func (*Libro) Descriptor() ([]byte, []int) {
+	return file_namenode_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Libro) GetTitulo() string {
+	if x != nil {
+		return x.Titulo
+	}
+	return ""
+}
+
+type Catalogo struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Libro []*Libro `protobuf:"bytes,1,rep,name=libro,proto3" json:"libro,omitempty"`
+}
+
+func (x *Catalogo) Reset() {
+	*x = Catalogo{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_namenode_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Catalogo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Catalogo) ProtoMessage() {}
+
+func (x *Catalogo) ProtoReflect() protoreflect.Message {
+	mi := &file_namenode_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Catalogo.ProtoReflect.Descriptor instead.
+func (*Catalogo) Descriptor() ([]byte, []int) {
+	return file_namenode_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Catalogo) GetLibro() []*Libro {
+	if x != nil {
+		return x.Libro
+	}
+	return nil
 }
 
 var File_namenode_proto protoreflect.FileDescriptor
@@ -214,18 +308,28 @@ var file_namenode_proto_rawDesc = []byte{
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x69, 0x74, 0x75, 0x6c, 0x6f, 0x12, 0x18,
 	0x0a, 0x07, 0x4e, 0x63, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52,
 	0x07, 0x4e, 0x63, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x49, 0x64, 0x4e, 0x6f,
-	0x64, 0x6f, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x49, 0x64, 0x4e, 0x6f, 0x64, 0x6f,
-	0x22, 0x1b, 0x0a, 0x09, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x12, 0x0e, 0x0a,
-	0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x64, 0x32, 0x7a, 0x0a,
+	0x64, 0x6f, 0x18, 0x04, 0x20, 0x03, 0x28, 0x03, 0x52, 0x06, 0x49, 0x64, 0x4e, 0x6f, 0x64, 0x6f,
+	0x22, 0x19, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x49,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x64, 0x22, 0x1f, 0x0a, 0x05, 0x4c,
+	0x69, 0x62, 0x72, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x69, 0x74, 0x75, 0x6c, 0x6f, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x69, 0x74, 0x75, 0x6c, 0x6f, 0x22, 0x2e, 0x0a, 0x08,
+	0x43, 0x61, 0x74, 0x61, 0x6c, 0x6f, 0x67, 0x6f, 0x12, 0x22, 0x0a, 0x05, 0x6c, 0x69, 0x62, 0x72,
+	0x6f, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
+	0x4c, 0x69, 0x62, 0x72, 0x6f, 0x52, 0x05, 0x6c, 0x69, 0x62, 0x72, 0x6f, 0x32, 0xd7, 0x01, 0x0a,
 	0x10, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x69, 0x6f, 0x4e, 0x61, 0x6d, 0x65, 0x4e, 0x6f, 0x64,
 	0x65, 0x12, 0x2f, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61, 0x72, 0x12, 0x10,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61,
 	0x1a, 0x10, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73,
-	0x74, 0x61, 0x12, 0x35, 0x0a, 0x0f, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x61, 0x72, 0x41,
-	0x63, 0x63, 0x65, 0x73, 0x6f, 0x12, 0x10, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x6f,
-	0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x1a, 0x10, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x74, 0x61, 0x12, 0x2c, 0x0a, 0x09, 0x56, 0x65, 0x72, 0x4c, 0x69, 0x62, 0x72, 0x6f, 0x73, 0x12,
+	0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x61, 0x74, 0x61, 0x6c, 0x6f, 0x67, 0x6f,
+	0x12, 0x31, 0x0a, 0x0f, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x61, 0x72, 0x41, 0x63, 0x63,
+	0x65, 0x73, 0x6f, 0x12, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x31, 0x0a, 0x0f, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x61, 0x72,
+	0x43, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x12, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x4c,
+	0x69, 0x62, 0x72, 0x6f, 0x1a, 0x10, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x72, 0x6f,
+	0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -240,23 +344,30 @@ func file_namenode_proto_rawDescGZIP() []byte {
 	return file_namenode_proto_rawDescData
 }
 
-var file_namenode_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_namenode_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_namenode_proto_goTypes = []interface{}{
 	(*Asignacion)(nil), // 0: proto.Asignacion
 	(*Propuesta)(nil),  // 1: proto.Propuesta
-	(*Solicitud)(nil),  // 2: proto.Solicitud
+	(*Request)(nil),    // 2: proto.Request
+	(*Libro)(nil),      // 3: proto.Libro
+	(*Catalogo)(nil),   // 4: proto.Catalogo
 }
 var file_namenode_proto_depIdxs = []int32{
 	0, // 0: proto.Propuesta.asignacion:type_name -> proto.Asignacion
-	1, // 1: proto.ServicioNameNode.Confirmar:input_type -> proto.Propuesta
-	2, // 2: proto.ServicioNameNode.SolicitarAcceso:input_type -> proto.Solicitud
-	1, // 3: proto.ServicioNameNode.Confirmar:output_type -> proto.Propuesta
-	2, // 4: proto.ServicioNameNode.SolicitarAcceso:output_type -> proto.Solicitud
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 1: proto.Catalogo.libro:type_name -> proto.Libro
+	1, // 2: proto.ServicioNameNode.Confirmar:input_type -> proto.Propuesta
+	2, // 3: proto.ServicioNameNode.VerLibros:input_type -> proto.Request
+	2, // 4: proto.ServicioNameNode.SolicitarAcceso:input_type -> proto.Request
+	3, // 5: proto.ServicioNameNode.SolicitarChunks:input_type -> proto.Libro
+	1, // 6: proto.ServicioNameNode.Confirmar:output_type -> proto.Propuesta
+	4, // 7: proto.ServicioNameNode.VerLibros:output_type -> proto.Catalogo
+	2, // 8: proto.ServicioNameNode.SolicitarAcceso:output_type -> proto.Request
+	1, // 9: proto.ServicioNameNode.SolicitarChunks:output_type -> proto.Propuesta
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_namenode_proto_init() }
@@ -290,7 +401,31 @@ func file_namenode_proto_init() {
 			}
 		}
 		file_namenode_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Solicitud); i {
+			switch v := v.(*Request); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_namenode_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Libro); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_namenode_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Catalogo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -308,7 +443,7 @@ func file_namenode_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_namenode_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -335,7 +470,9 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ServicioNameNodeClient interface {
 	Confirmar(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
-	SolicitarAcceso(ctx context.Context, in *Solicitud, opts ...grpc.CallOption) (*Solicitud, error)
+	VerLibros(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Catalogo, error)
+	SolicitarAcceso(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Request, error)
+	SolicitarChunks(ctx context.Context, in *Libro, opts ...grpc.CallOption) (*Propuesta, error)
 }
 
 type servicioNameNodeClient struct {
@@ -355,9 +492,27 @@ func (c *servicioNameNodeClient) Confirmar(ctx context.Context, in *Propuesta, o
 	return out, nil
 }
 
-func (c *servicioNameNodeClient) SolicitarAcceso(ctx context.Context, in *Solicitud, opts ...grpc.CallOption) (*Solicitud, error) {
-	out := new(Solicitud)
+func (c *servicioNameNodeClient) VerLibros(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Catalogo, error) {
+	out := new(Catalogo)
+	err := c.cc.Invoke(ctx, "/proto.ServicioNameNode/VerLibros", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *servicioNameNodeClient) SolicitarAcceso(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Request, error) {
+	out := new(Request)
 	err := c.cc.Invoke(ctx, "/proto.ServicioNameNode/SolicitarAcceso", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *servicioNameNodeClient) SolicitarChunks(ctx context.Context, in *Libro, opts ...grpc.CallOption) (*Propuesta, error) {
+	out := new(Propuesta)
+	err := c.cc.Invoke(ctx, "/proto.ServicioNameNode/SolicitarChunks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +522,9 @@ func (c *servicioNameNodeClient) SolicitarAcceso(ctx context.Context, in *Solici
 // ServicioNameNodeServer is the server API for ServicioNameNode service.
 type ServicioNameNodeServer interface {
 	Confirmar(context.Context, *Propuesta) (*Propuesta, error)
-	SolicitarAcceso(context.Context, *Solicitud) (*Solicitud, error)
+	VerLibros(context.Context, *Request) (*Catalogo, error)
+	SolicitarAcceso(context.Context, *Request) (*Request, error)
+	SolicitarChunks(context.Context, *Libro) (*Propuesta, error)
 }
 
 // UnimplementedServicioNameNodeServer can be embedded to have forward compatible implementations.
@@ -377,8 +534,14 @@ type UnimplementedServicioNameNodeServer struct {
 func (*UnimplementedServicioNameNodeServer) Confirmar(context.Context, *Propuesta) (*Propuesta, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Confirmar not implemented")
 }
-func (*UnimplementedServicioNameNodeServer) SolicitarAcceso(context.Context, *Solicitud) (*Solicitud, error) {
+func (*UnimplementedServicioNameNodeServer) VerLibros(context.Context, *Request) (*Catalogo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerLibros not implemented")
+}
+func (*UnimplementedServicioNameNodeServer) SolicitarAcceso(context.Context, *Request) (*Request, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SolicitarAcceso not implemented")
+}
+func (*UnimplementedServicioNameNodeServer) SolicitarChunks(context.Context, *Libro) (*Propuesta, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SolicitarChunks not implemented")
 }
 
 func RegisterServicioNameNodeServer(s *grpc.Server, srv ServicioNameNodeServer) {
@@ -403,8 +566,26 @@ func _ServicioNameNode_Confirmar_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ServicioNameNode_VerLibros_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicioNameNodeServer).VerLibros(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.ServicioNameNode/VerLibros",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicioNameNodeServer).VerLibros(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ServicioNameNode_SolicitarAcceso_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Solicitud)
+	in := new(Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -416,7 +597,25 @@ func _ServicioNameNode_SolicitarAcceso_Handler(srv interface{}, ctx context.Cont
 		FullMethod: "/proto.ServicioNameNode/SolicitarAcceso",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServicioNameNodeServer).SolicitarAcceso(ctx, req.(*Solicitud))
+		return srv.(ServicioNameNodeServer).SolicitarAcceso(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ServicioNameNode_SolicitarChunks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Libro)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicioNameNodeServer).SolicitarChunks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.ServicioNameNode/SolicitarChunks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicioNameNodeServer).SolicitarChunks(ctx, req.(*Libro))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -430,8 +629,16 @@ var _ServicioNameNode_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ServicioNameNode_Confirmar_Handler,
 		},
 		{
+			MethodName: "VerLibros",
+			Handler:    _ServicioNameNode_VerLibros_Handler,
+		},
+		{
 			MethodName: "SolicitarAcceso",
 			Handler:    _ServicioNameNode_SolicitarAcceso_Handler,
+		},
+		{
+			MethodName: "SolicitarChunks",
+			Handler:    _ServicioNameNode_SolicitarChunks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

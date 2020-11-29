@@ -22,7 +22,12 @@ message Setup{
     string titulo = 2;
 }
 
+message Solicitud{
+    string NombreChunk = 1;
+}
+
 service ServicioSubida{
     rpc SubirArchivo(stream Chunk) returns (StatusSubida);
+    rpc DescargarArchivo(Solicitud) returns (stream Chunk);
     rpc AcusoEnvio(Setup) returns (Setup);
 }

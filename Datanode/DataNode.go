@@ -6,7 +6,6 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net"
 	"os"
 	"strconv"
@@ -30,6 +29,8 @@ var contadorChunks = int64(-1)
 var totalChunks = int64(0)
 var titulo string
 var eleccion int
+var chunkSize = 250000
+var indice = 0
 
 var mutexChunks = &sync.Mutex{}
 var condChunk = sync.NewCond(mutexChunks)
@@ -58,10 +59,13 @@ var condNodoC = sync.NewCond(mutexNodoC)
 */
 
 //Direcciones ip relevantes
+//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
 var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
 //var disponibles = [3]bool{true,true,true}
 var nameNode = "localhost:50055"
+
+//var namenode = "10.6.40.249:50058"
 
 func gestionEnvios(cliente clientGRPC, nodo int, nombre string) {
 	cliente = preparar(nodo)
@@ -84,7 +88,7 @@ func newClient(direccion string) (c clientGRPC, err error) {
 	return c, err
 }
 
-func conectarDataNode(direccion int) (c clientGRPC) {
+func conectarDataNode(direccion int) clientGRPC {
 	var tecla string
 	fmt.Println("Direccion de nodo destino" + direcciones[direccion])
 	c1, err := newClient(direcciones[direccion])
@@ -129,6 +133,7 @@ func preparar(nodo int) clientGRPC {
 func main() {
 
 	fmt.Println("Puerto")
+
 	_, err := fmt.Scanf("%d", &eleccion)
 	if err != nil {
 		fmt.Println(err)
@@ -239,22 +244,26 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 func generarPropuesta(numChunks int64) {
 	asignaciones := make([]*proto.Asignacion, numChunks)
 	//fmt.Println("NumeroChunks:", numChunks)
+	pos := int64(-1)
 	for i := int64(0); i < numChunks; i++ {
-		dado := rand.Float64()
+		//dado := rand.Float64()
 		asignaciones[i] = new(proto.Asignacion)
-		fmt.Println(dado)
-		if dado <= 0.33 { //asignar a nodo 1
-			asignaciones[i].PosDireccion = 0
-		} else {
-			if dado <= 0.66 { //asignar a nodo 2
-				asignaciones[i].PosDireccion = 1
+		/*
+			if dado <= 0.33 { //asignar a nodo 1
+				asignaciones[i].PosDireccion = 0
+			} else {
+				if dado <= 0.66 { //asignar a nodo 2
+					asignaciones[i].PosDireccion = 1
 
-			} else { //asignar a nodo 3
-				asignaciones[i].PosDireccion = 2
+				} else { //asignar a nodo 3
+					asignaciones[i].PosDireccion = 2
+				}
 			}
-		}
+		*/
+		asignaciones[i].PosDireccion = (pos + 1) % 3
+		pos++
 		asignaciones[i].NumChunk = i + int64(1)
-		//fmt.Println("Generated proposal:" + direcciones[asignaciones[i].PosDireccion])
+		fmt.Println("Generated proposal:" + direcciones[asignaciones[i].PosDireccion])
 	}
 
 	conn, err := grpc.Dial(nameNode, grpc.WithInsecure())
@@ -266,10 +275,9 @@ func generarPropuesta(numChunks int64) {
 		Asignacion: asignaciones,
 		Titulo:     titulo,
 		Nchunks:    numChunks,
-		IdNodo:     int64(eleccion),
 	}
 
-	solicitud := proto.Solicitud{
+	solicitud := proto.Request{
 		Id: int64(eleccion),
 	}
 	//fmt.Println(len(propuesta.Asignacion))
@@ -279,10 +287,12 @@ func generarPropuesta(numChunks int64) {
 	respuesta, _ := client.Confirmar(context.Background(), &propuesta)
 
 	for i := int64(0); i < numChunks; i++ {
+		fmt.Println("Titulo:" + titulo)
 		nodo := int(respuesta.GetAsignacion()[i].PosDireccion)
-		fmt.Println("Nodo elegido: " + direcciones[nodo])
 		nombre := titulo + "_" + strconv.FormatInt(i, 10)
+		fmt.Println("Nombre:" + nombre)
 		if nodo == eleccion {
+			//ioutil.WriteFile(nombre, recepcion.Contenido, os.ModeAppend)
 			continue
 		}
 		go gestionEnvios(clienteA, nodo, nombre)
@@ -297,6 +307,7 @@ func (server *server) AcusoEnvio(ctx context.Context, nChunks *proto.Setup) (*pr
 	contadorChunks = nChunks.GetNumChunks()
 	titulo = nChunks.GetTitulo()
 	totalChunks = contadorChunks
+	indice = 0
 	return &proto.Setup{NumChunks: contadorChunks, Titulo: titulo}, nil
 }
 
@@ -311,19 +322,10 @@ func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServe
 			log.Fatalf("failed unexpectadely while reading chunks from stream")
 			return
 		}
-		newFileName := titulo + "_" + strconv.FormatInt(contadorChunks-1, 10)
+		newFileName := titulo + "_" + strconv.Itoa(indice)
+		indice++
 		//contadorChunks++
 		_, err = os.Create(newFileName)
-
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		//set the newFileName file to APPEND MODE!!
-		// open files r and w
-
-		//	file, err = os.OpenFile(newFileName, os.O_CREATE)
 
 		if err != nil {
 			fmt.Println(err)
@@ -442,5 +444,41 @@ END:
 		file.Close()
 	*/
 	return
+
+}
+
+func (server *server) DescargarArchivo(request *proto.Solicitud, stream proto.ServicioSubida_DescargarArchivoServer) error {
+	archivo := request.GetNombreChunk()
+	final := archivo[len(archivo)-1:]
+	numero, _ := strconv.Atoi(final)
+	//numero--
+	fmt.Println(strconv.Itoa(numero))
+	letras := strconv.Itoa(numero)
+	archivoReal := archivo[:len(archivo)-2] + ".pdf_" + letras
+	file, err := os.Open(archivoReal)
+	if err != nil {
+		log.Fatalf("Error al abrir el archivo: %v", err)
+		return err
+	}
+
+	defer file.Close()
+	buf := make([]byte, chunkSize)
+	n, err := file.Read(buf)
+	if err != nil {
+		log.Fatalf("Error while copying from file to buf:%v", err)
+		return err
+	}
+
+	err = stream.Send(&proto.Chunk{
+		Contenido: buf[:n],
+	})
+
+	if err != nil {
+		log.Fatalf("Failed to send chunk over stream:%v", err)
+		return err
+	}
+	fmt.Println("Chunk enviado a cliente")
+
+	return nil
 
 }

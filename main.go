@@ -15,6 +15,15 @@ import (
 	"google.golang.org/grpc"
 )
 
+//Direcciones ip relevantes
+//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+
+//var disponibles = [3]bool{true,true,true}
+var nameNode = "localhost:50055"
+
+//var namenode = "10.6.40.249:50058"
+
 type clientGRPC struct {
 	conn      *grpc.ClientConn
 	client    proto.ServicioSubidaClient
@@ -163,9 +172,10 @@ func main() {
 			fmt.Println(err)
 		}
 	*/
-	go testing("Los_120_dias_de_Sodoma-Marques_de_Sade.pdf", "localhost:50052")
-	go testing("El_arte_de_la_guerra-Sun_Tzu.pdf", "localhost:50053")
-	time.Sleep(10 * time.Second)
+	go testing("Los_120_dias_de_Sodoma-Marques_de_Sade.pdf", direcciones[0])
+	go testing("El_arte_de_la_guerra-Sun_Tzu.pdf", direcciones[1])
+	go testing("Dracula-Stoker_Bram.pdf", direcciones[2])
+	time.Sleep(15 * time.Second)
 
 	// just for fun, let's recombine back the chunked files in a new file
 	/*

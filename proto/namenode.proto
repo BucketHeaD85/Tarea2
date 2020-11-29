@@ -11,15 +11,23 @@ message Propuesta{
     repeated Asignacion asignacion = 1;
     string titulo = 2; 
     int64 Nchunks = 3;
-    int64 IdNodo = 4;
+    repeated int64 IdNodo = 4;
 }
 
-message Solicitud{
+message Request{
    int64 Id = 1; 
+}
+message Libro{
+    string titulo = 1;
+}
+message Catalogo{
+    repeated Libro libro = 1;
 }
 
 
 service ServicioNameNode{
     rpc Confirmar(Propuesta) returns (Propuesta);
-    rpc SolicitarAcceso(Solicitud) returns (Solicitud);
+    rpc VerLibros(Request) returns (Catalogo);
+    rpc SolicitarAcceso(Request) returns (Request);
+    rpc SolicitarChunks(Libro) returns (Propuesta);
 }
