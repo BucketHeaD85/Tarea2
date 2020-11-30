@@ -252,18 +252,6 @@ func generarPropuesta(numChunks int64) {
 	for i := int64(0); i < numChunks; i++ {
 		//dado := rand.Float64()
 		asignaciones[i] = new(proto.Asignacion)
-		/*
-			if dado <= 0.33 { //asignar a nodo 1
-				asignaciones[i].PosDireccion = 0
-			} else {
-				if dado <= 0.66 { //asignar a nodo 2
-					asignaciones[i].PosDireccion = 1
-
-				} else { //asignar a nodo 3
-					asignaciones[i].PosDireccion = 2
-				}
-			}
-		*/
 		asignaciones[i].PosDireccion = (pos + 1) % 3
 		pos++
 		asignaciones[i].NumChunk = i + int64(1)

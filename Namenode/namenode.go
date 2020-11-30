@@ -24,10 +24,6 @@ var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.2
 //var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 var flags = [3]bool{true, true, true}
 
-//var nameNode = "localhost:50055"
-
-var namenode = "10.6.40.249:50055"
-
 //Variables de control
 var disponible = true
 var numLibros = 0
@@ -65,13 +61,21 @@ func (server *server) SolicitarAcceso(ctx context.Context, request *proto.Reques
 		fmt.Println("Sup")
 		disponible = false
 	} else {
-		fmt.Println("Waiting")
+
+		//	fmt.Println("Waiting")
 		cola = append(cola, int(request.GetId()))
+		//	fmt.Println("Entrando a la cola - Id:" + strconv.FormatInt(request.GetId(), 10))
+		/*
+			for i := 0; i < len(cola); i++ {
+				fmt.Printf("Item %d : %d", i, cola[i])
+			}
+		*/
 		//condAcceso.L.Lock()
-		for (!disponible) && (cola[0] != int(request.GetId())) {
+		for !((disponible) && (cola[0] == int(request.GetId()))) {
 			condAcceso.Wait()
 		}
-		fmt.Println("Awakened")
+		disponible = false
+		//	fmt.Println("Awakened")
 		cola[0] = 0
 		cola = cola[1:]
 		//condAcceso.L.Unlock()
