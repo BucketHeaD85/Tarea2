@@ -93,9 +93,10 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 	asignacion[0].PosDireccion = 0
 	asignacion[0].NumChunk = 1
 	*/
-	time.Sleep(1 * time.Second)
+	defer timeTrack(time.Now(), int(request.GetIdNodo()))
+	//time.Sleep(1 * time.Second)
 	titulo := request.GetTitulo()
-
+	nMensajes := int64(2) // Se cuenta el mensaje de ida y vuelta entre data node y namenode
 	f, err := os.OpenFile("./Log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
@@ -113,7 +114,7 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 	for i := 0; i < n; i++ {
 		current := request.GetAsignacion()[i].PosDireccion
 		//fmt.Println("Current proposal:" + direcciones[current])
-		pos := verificarDataNode(current)
+		pos := verificarDataNode(current, &nMensajes)
 		request.GetAsignacion()[i].PosDireccion = pos
 		fmt.Println(direcciones[pos])
 		f.WriteString("Chunk " + strconv.Itoa(i+1) + ": " + direcciones[pos] + "\n")
@@ -121,14 +122,22 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 	disponible = true
 	fmt.Println("Done")
 	numLibros++
+	respuesta := proto.Propuesta{
+		Asignacion: request.GetAsignacion(),
+		Titulo:     request.GetTitulo(),
+		Nchunks:    request.GetNchunks(),
+		IdNodo:     nMensajes,
+	}
+
 	condAcceso.Signal()
-	return request, nil
+	return &respuesta, nil
 }
 
-func verificarDataNode(posDireccion int64) int64 {
+func verificarDataNode(posDireccion int64, nMensajes *int64) int64 {
 	nodosDisponibles := 3
 	factible := true
 	con, err := grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
+	*nMensajes++
 	if err != nil { //el nodo propuesto no esta disponible
 		for {
 			flags[posDireccion] = false
@@ -145,6 +154,7 @@ func verificarDataNode(posDireccion int64) int64 {
 				if !flags[(posDireccion)] {
 					posDireccion = (posDireccion + int64(1)) % 3 //Si no lo esta, elige el ultimo nodo posible
 					con, err = grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
+					*nMensajes++
 					if err != nil {
 						flags[posDireccion] = false
 					}
@@ -163,6 +173,7 @@ func verificarDataNode(posDireccion int64) int64 {
 			}
 
 			con, err = grpc.Dial(direcciones[posDireccion], grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
+			*nMensajes++
 			if err == nil {
 				break
 			} // se ha encontrado un reemplazo
@@ -309,4 +320,9 @@ func leerLog() error {
 	numLibros = i
 	fmt.Println("Log leido: " + strconv.Itoa(numLibros) + " libros encontrados")
 	return nil
+}
+
+func timeTrack(start time.Time, name int) {
+	elapsed := time.Since(start)
+	log.Printf("El nodo %d tardó %s segundos en completar su solicitud de acceso y escritura al log", name, elapsed)
 }

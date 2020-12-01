@@ -31,6 +31,7 @@ var titulo string
 var eleccion int
 var chunkSize = 250000
 var indice = 0
+var contadorMensajes = int64(0)
 
 var mutexChunks = &sync.Mutex{}
 var condChunk = sync.NewCond(mutexChunks)
@@ -112,21 +113,6 @@ func conectarDataNode(direccion int) clientGRPC {
 }
 
 func preparar(nodo int) clientGRPC {
-	/*
-		if eleccion == 0 {
-			clienteB = conectarDataNode(1)
-			clienteC = conectarDataNode(2)
-
-		} else {
-			if eleccion == 1 {
-				clienteA = conectarDataNode(0)
-				clienteC = conectarDataNode(2)
-			} else {
-				clienteA = conectarDataNode(0)
-				clienteB = conectarDataNode(1)
-			}
-		}
-	*/
 	cliente := conectarDataNode(nodo)
 	return cliente
 }
@@ -245,7 +231,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 	return
 }
 
-func generarPropuesta(numChunks int64) {
+func generarPropuesta(numChunks int64) error {
 	asignaciones := make([]*proto.Asignacion, numChunks)
 	//fmt.Println("NumeroChunks:", numChunks)
 	pos := int64(-1)
@@ -267,6 +253,7 @@ func generarPropuesta(numChunks int64) {
 		Asignacion: asignaciones,
 		Titulo:     titulo,
 		Nchunks:    numChunks,
+		IdNodo:     int64(eleccion),
 	}
 
 	solicitud := proto.Request{
@@ -277,7 +264,7 @@ func generarPropuesta(numChunks int64) {
 	//fmt.Println("Numero de chunks:", numChunks)
 	client.SolicitarAcceso(context.Background(), &solicitud)
 	respuesta, _ := client.Confirmar(context.Background(), &propuesta)
-
+	contadorMensajes = respuesta.GetIdNodo()
 	for i := int64(0); i < numChunks; i++ {
 		fmt.Println("Titulo:" + titulo)
 		nodo := int(respuesta.GetAsignacion()[i].PosDireccion)
@@ -287,10 +274,14 @@ func generarPropuesta(numChunks int64) {
 			//ioutil.WriteFile(nombre, recepcion.Contenido, os.ModeAppend)
 			continue
 		}
-		go gestionEnvios(clienteA, nodo, nombre)
+		contadorMensajes++
+		//go gestionEnvios(clienteA, nodo, nombre)
+		gestionEnvios(clienteA, nodo, nombre)
 	}
+	fmt.Printf("%d mensajes enviados para la distribucion de %v\n", contadorMensajes, titulo)
 
-	fmt.Println(respuesta.GetAsignacion())
+	//fmt.Println(respuesta.GetAsignacion())
+	return nil
 
 }
 
