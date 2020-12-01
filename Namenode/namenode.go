@@ -28,6 +28,7 @@ var flags = [3]bool{true, true, true}
 var disponible = true
 var numLibros = 0
 var cola []int
+var logListo = false
 
 //var titulo string
 
@@ -197,10 +198,15 @@ func (server *server) VerLibros(ctx context.Context, request *proto.Request) (*p
 			fmt.Println("Aun no hay libros en el catalogo")
 		}
 	*/
+
 	fmt.Println("Client Downloader conectado")
 	archivo, err := os.Open("Log.txt")
 	if err != nil {
-		log.Fatal(err)
+		if !logListo {
+			libros := make([]*proto.Libro, 1)
+			respuesta := proto.Catalogo{Libro: libros}
+			return &respuesta, err
+		}
 	}
 
 	defer archivo.Close()
@@ -223,6 +229,7 @@ func (server *server) VerLibros(ctx context.Context, request *proto.Request) (*p
 		i++
 	}
 	respuesta := proto.Catalogo{Libro: libros}
+	logListo = true
 	return &respuesta, nil
 }
 
@@ -318,6 +325,7 @@ func leerLog() error {
 		i++
 	}
 	numLibros = i
+	logListo = true
 	fmt.Println("Log leido: " + strconv.Itoa(numLibros) + " libros encontrados")
 	return nil
 }

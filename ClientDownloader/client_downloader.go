@@ -67,7 +67,10 @@ func main() {
 		log.Fatalf("Error al conectar al namenode")
 	}
 	request := proto.Request{Id: 1}
-	respuesta, _ := clienteNameNode.client.VerLibros(context.Background(), &request)
+	respuesta, err := clienteNameNode.client.VerLibros(context.Background(), &request)
+	if err != nil {
+		log.Fatalf("El log no esta disponible para ser consultado: %v\n", err)
+	}
 	largo := len(respuesta.GetLibro())
 
 	fmt.Println("Seleccionar libro:")
