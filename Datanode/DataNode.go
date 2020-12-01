@@ -81,7 +81,7 @@ func newClient(direccion string) (c clientGRPC, err error) {
 
 	c.conn, err = grpc.Dial(direccion, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("failed to start grpc connection with address" + direccion)
+		fmt.Printf("Error al conectar a la direccion" + direccion + "\n")
 		return
 	}
 
@@ -150,7 +150,7 @@ func main() {
 	reflection.Register(srv)
 	fmt.Println("Escuchando")
 	if e := srv.Serve(listener); e != nil {
-		log.Fatalf("failed to Serve on port 4040: %v", e)
+		log.Fatalf("failed to Serve on port 50053: %v", e)
 	}
 
 }
@@ -173,7 +173,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 
 	stream, err := c.client.SubirArchivo(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create upstream for file:%v", err)
+		fmt.Printf("Failed to create upstream for file:%v\n", err)
 		return
 	}
 	defer stream.CloseSend()
@@ -187,7 +187,8 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 	err = stream.Send(req)
 
 	if err != nil {
-		log.Fatalf("Cannot send file info")
+		fmt.Printf("Error al enviar informacion sobre el chunk:%v\n", err)
+		return
 	}
 
 	//stats.StartedAt = time.Now()
@@ -201,7 +202,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 				continue
 			}
 
-			log.Fatalf("Error while copying from file to buf:%v", err)
+			fmt.Printf("Error while copying from file to buf:%v\n", err)
 			return
 		}
 
@@ -219,12 +220,12 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 
 	status, err = stream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("failed to receive upstream status response:%v", err)
+		fmt.Printf("Error al recibir respuesta:%v\n", err)
 		return
 	}
 
 	if status.Codigo != proto.CodigoStatusSubida_Exitoso {
-		log.Fatalf("upload failed - msg:%v", err)
+		fmt.Printf("Error al subir archivo - msg:%v", err)
 		return
 	}
 
@@ -246,7 +247,8 @@ func generarPropuesta(numChunks int64) error {
 
 	conn, err := grpc.Dial(nameNode, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Failed to connect: %s", err)
+		fmt.Printf("Error al conectar al namenode: %s\n", err)
+		return err
 	}
 	client := proto.NewServicioNameNodeClient(conn)
 	propuesta := proto.Propuesta{
@@ -276,7 +278,6 @@ func generarPropuesta(numChunks int64) error {
 		}
 		contadorMensajes++
 		//go gestionEnvios(clienteA, nodo, nombre)
-		gestionEnvios(clienteA, nodo, nombre)
 	}
 	fmt.Printf("%d mensajes enviados para la distribucion de %v\n", contadorMensajes, titulo)
 
@@ -297,7 +298,7 @@ func (server *server) AcusoEnvio(ctx context.Context, nChunks *proto.Setup) (*pr
 func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServer) (err error) {
 	req, err := stream.Recv()
 	if err != nil {
-		log.Fatalf("Error al recibir informacion sobre el archivo: %v", err)
+		fmt.Printf("Error al recibir informacion sobre el archivo: %v\n", err)
 		return nil
 	}
 	nombre := req.GetNombre()
@@ -308,7 +309,7 @@ func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServe
 				goto END
 			}
 
-			log.Fatalf("failed unexpectadely while reading chunks from stream")
+			fmt.Printf("Fallo inesparado al leer archivos desde el stream\n")
 			return
 		}
 		newFileName := nombre
@@ -376,7 +377,7 @@ func (server *server) DescargarArchivo(request *proto.Solicitud, stream proto.Se
 	err = stream.Send(req)
 
 	if err != nil {
-		log.Fatalf("Failed to send chunk over stream:%v", err)
+		fmt.Printf("Error al enviar el archivo a través del stream:%v\n", err)
 		return err
 	}
 	fmt.Println("Chunk enviado a cliente")
