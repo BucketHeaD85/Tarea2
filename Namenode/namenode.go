@@ -334,8 +334,9 @@ func leerLog() error {
 
 func (server *server) EnviarDistribucion(ctx context.Context, request *proto.Propuesta) (*proto.Propuesta, error) {
 	
-	time.Sleep(1 * time.Second)
+	//time.Sleep(1 * time.Second)
 	titulo := request.GetTitulo()
+	nMensajes := int64(2) // Se cuenta el mensaje de ida y vuelta entre data node y namenode
 
 	f, err := os.OpenFile("./Log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -359,5 +360,13 @@ func (server *server) EnviarDistribucion(ctx context.Context, request *proto.Pro
 	}
 	fmt.Println("Done")
 	numLibros++
-	return request, nil
+	//new
+	respuesta := proto.Propuesta{
+		Asignacion: request.GetAsignacion(),
+		Titulo:     request.GetTitulo(),
+		Nchunks:    request.GetNchunks(),
+		IdNodo:     nMensajes,
+	}
+	//return request, nil
+	return &respuesta, nil
 }

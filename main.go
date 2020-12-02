@@ -32,7 +32,7 @@ var aux int
 
 func newClient(direccion string) (c clientGRPC, err error) {
 
-	c.chunkSize = 250000
+	c.chunkSize = 256000
 
 	c.conn, err = grpc.Dial(direccion, grpc.WithInsecure())
 	if err != nil {
@@ -145,7 +145,7 @@ func testing(nombre string, direccion string) error {
 
 	var fileSize int64 = fileInfo.Size()
 
-	const fileChunk = 250000
+	const fileChunk = 256000
 	fmt.Println(fileChunk)
 
 	totalPartsNum := int64(math.Ceil(float64(fileSize) / float64(fileChunk)))

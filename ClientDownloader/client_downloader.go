@@ -41,7 +41,7 @@ func conectar(direccion string, tipo int) (c datanodeGRPC, d namenodeGRPC, err e
 
 		c.client = proto.NewServicioSubidaClient(c.conn)
 
-		c.chunkSize = 250000
+		c.chunkSize = 256000
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -50,7 +50,7 @@ func conectar(direccion string, tipo int) (c datanodeGRPC, d namenodeGRPC, err e
 	} else {
 		d.conn, err = grpc.Dial(direccion, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(1*time.Second))
 		d.client = proto.NewServicioNameNodeClient(d.conn)
-		d.chunkSize = 250000
+		d.chunkSize = 256000
 		if err != nil {
 			fmt.Println(err)
 			return

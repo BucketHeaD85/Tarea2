@@ -26,8 +26,9 @@ var contadorChunks = int64(-1)
 var totalChunks = int64(0)
 var titulo string
 var eleccion int
-var chunkSize = 250000
+var chunkSize = 256000
 var indice = 0
+var contadorMensajes = int64(0)
 
 //mutex
 var mutexChunks = &sync.Mutex{}
@@ -127,7 +128,7 @@ func gestionEnvios(cliente clientGRPC, nodo int, nombre string) {
 
 func newClient(direccion string) (c clientGRPC, err error) {
 
-	c.chunkSize = 250000
+	c.chunkSize = 256000
 
 	c.conn, err = grpc.Dial(direccion, grpc.WithInsecure())
 	if err != nil {
@@ -180,12 +181,13 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 	if err != nil {
 		log.Fatalf("Error al abrir el archivo: %v", err)
 		return
-	}
+	} 
 	defer file.Close()
+
 
 	stream, err := c.client.SubirArchivo(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create upstream for file:%v", err)
+		fmt.Printf("Failed to create upstream for file:%v\n", err)
 		return
 	}
 	defer stream.CloseSend()
@@ -199,7 +201,8 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 	err = stream.Send(req)
 
 	if err != nil {
-		log.Fatalf("Cannot send file info")
+		fmt.Printf("Error al enviar informacion sobre el chunk:%v\n", err)
+		return
 	}
 
 	//stats.StartedAt = time.Now()
@@ -213,7 +216,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 				continue
 			}
 
-			log.Fatalf("Error while copying from file to buf:%v", err)
+			fmt.Printf("Error while copying from file to buf:%v\n", err)
 			return
 		}
 
@@ -231,12 +234,12 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 
 	status, err = stream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("failed to receive upstream status response:%v", err)
+		fmt.Printf("Error al recibir respuesta:%v\n", err)
 		return
 	}
 
 	if status.Codigo != proto.CodigoStatusSubida_Exitoso {
-		log.Fatalf("upload failed - msg:%v", err)
+		fmt.Printf("Error al subir archivo - msg:%v", err)
 		return
 	}
 
@@ -244,6 +247,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 }
 
 func generarPropuesta(numChunks int64) {
+	defer timeTrack(time.Now(), eleccion)
 	asignaciones := make([]*proto.Asignacion, numChunks)
 	//fmt.Println("NumeroChunks:", numChunks)
 	pos := int64(-1)
@@ -258,13 +262,15 @@ func generarPropuesta(numChunks int64) {
 
 	conn, err := grpc.Dial(nameNode, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Failed to connect: %s", err)
+		fmt.Printf("Error al conectar al namenode: %s\n", err)
+		return 
 	}
 	client := proto.NewServicioNameNodeClient(conn)
 	propuesta := &proto.Propuesta{
 		Asignacion: asignaciones,
 		Titulo:     titulo,
 		Nchunks:    numChunks,
+		IdNodo:     int64(eleccion),
 	}
 
 	solicitud := proto.Request{
@@ -277,6 +283,7 @@ func generarPropuesta(numChunks int64) {
 	if algoritmo !=0{
 		client.SolicitarAcceso(context.Background(), &solicitud)
 		respuesta,_= client.Confirmar(context.Background(), propuesta)
+		contadorMensajes = respuesta.GetIdNodo()
 	}else{
 		propuesta:= confirmarDistribucion(propuesta)
 		//walala confirmation here <-----------
@@ -286,6 +293,7 @@ func generarPropuesta(numChunks int64) {
 		criticalClock=int64(0)
 		clockMutex.Unlock()
 		respuesta, _ = client.EnviarDistribucion(context.Background(), propuesta)
+		contadorMensajes += int64(2)
 		criticalMutex.Unlock()
 	}
 	
@@ -299,7 +307,12 @@ func generarPropuesta(numChunks int64) {
 			//ioutil.WriteFile(nombre, recepcion.Contenido, os.ModeAppend)
 			continue
 		}
-		go gestionEnvios(clienteA, nodo, nombre)
+		contadorMensajes++
+		gestionEnvios(clienteA, nodo, nombre)
+		e := os.Remove(nombre) 
+		if e != nil { 
+			log.Fatal(e) 
+		} 
 	}
 
 	fmt.Println(respuesta.GetAsignacion())
@@ -329,7 +342,7 @@ func (server *server) SubirArchivo(stream proto.ServicioSubida_SubirArchivoServe
 				goto END
 			}
 
-			log.Fatalf("failed unexpectadely while reading chunks from stream")
+			fmt.Printf("Fallo inesparado al leer archivos desde el stream\n")
 			return
 		}
 		newFileName := nombre
@@ -439,6 +452,7 @@ func confirmarDistribucion(propuesta *proto.Propuesta)(distribucion *proto.Propu
 				//llamar funcion gRPC
 				client := proto.NewServicioSubidaClient(con)
 				reply,err:=client.ConfirmarPropuesta(context.Background(), dist)
+				contadorMensajes+=int64(2)
 				if err!=nil{
 					continue
 				}
@@ -479,6 +493,7 @@ func confirmarDistribucion(propuesta *proto.Propuesta)(distribucion *proto.Propu
 //acuerdo=acuerdo&&isAlive(v)
 
 func isAlive(direccion string)(alive bool){
+	contadorMensajes+=int64(2)
 	con, err := grpc.Dial(direccion, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(800*time.Millisecond))
 	if err != nil {
 		alive=false
@@ -562,6 +577,7 @@ func sendRequest(address string, timestamp int64, wg *sync.WaitGroup){
 		IdDataNode: idDataNode,
 	}
 	response,err:= client.PedirAccesoCritico(context.Background(), &request)
+	contadorMensajes +=int64(2)
 	clockMutex.Lock()
 	if response.GetClock()>clock{
 		clock=response.GetClock()
@@ -595,4 +611,10 @@ func (server *server) PedirAccesoCritico(ctx context.Context, request *proto.Ram
 		}
 	}
 	return &reply,nil
+}
+
+func timeTrack(start time.Time, name int) {
+	elapsed := time.Since(start)
+	log.Printf("El nodo %d tardó %s segundos en completar su solicitud de acceso y escritura al log", name, elapsed)
+	log.Printf("contadorMensajes %d", contadorMensajes)
 }

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package proto;
 
+import "proto/namenode.proto";
+
 message Chunk{
     oneof data{
         string nombre = 1;
@@ -29,8 +31,19 @@ message Solicitud{
     string NombreChunk = 1;
 }
 
+message Confirmacion{
+    bool aceptar = 1;
+}
+
+message Ramessage{
+    int64 clock=1;
+    int64 idDataNode=2;
+}
+
 service ServicioSubida{
     rpc SubirArchivo(stream Chunk) returns (StatusSubida);
     rpc DescargarArchivo(Solicitud) returns (stream Chunk);
     rpc AcusoEnvio(Setup) returns (Setup);
+    rpc ConfirmarPropuesta(Propuesta) returns (Confirmacion);
+    rpc PedirAccesoCritico(Ramessage) returns (Ramessage);
 }

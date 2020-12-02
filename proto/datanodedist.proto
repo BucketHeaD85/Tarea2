@@ -34,19 +34,7 @@ message Solicitud{
 message Confirmacion{
     bool aceptar = 1;
 }
-/*
-message AsignacionD{
-    int64 PosDireccion = 1;
-    int64 NumChunk = 2;
-}
 
-message PropuestaD{
-    repeated AsignacionD asignacion = 1;
-    string titulo = 2; 
-    int64 Nchunks = 3;
-    repeated int64 IdNodo = 4;
-}
-*/
 message Ramessage{
     int64 clock=1;
     int64 idDataNode=2;
