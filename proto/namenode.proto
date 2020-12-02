@@ -11,7 +11,7 @@ message Propuesta{
     repeated Asignacion asignacion = 1;
     string titulo = 2; 
     int64 Nchunks = 3;
-    repeated int64 IdNodo = 4;
+    int64 IdNodo = 4;
 }
 
 message Request{

@@ -36,7 +36,7 @@ func newClient(direccion string) (c clientGRPC, err error) {
 
 	c.conn, err = grpc.Dial(direccion, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("failed to start grpc connection with address localhost:50052")
+		fmt.Printf("failed to start grpc connection with address %v", err)
 		return
 	}
 
@@ -63,7 +63,7 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 
 	stream, err := c.client.SubirArchivo(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create upstream for file:%v", err)
+		fmt.Printf("Failed to create upstream for file:%v", err)
 		return
 	}
 	defer stream.CloseSend()
@@ -80,7 +80,8 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 	err = stream.Send(req)
 
 	if err != nil {
-		log.Fatalf("Cannot send file info")
+		fmt.Printf("Error al enviar informacion sobre el archivo")
+		return
 	}
 
 	for writing {
@@ -92,7 +93,7 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 				continue
 			}
 
-			log.Fatalf("Error while copying from file to buf:%v", err)
+			fmt.Printf("Error al copiar archivo a buffer:%v\n", err)
 			return
 		}
 
@@ -104,7 +105,7 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 
 		err = stream.Send(req)
 		if err != nil {
-			log.Fatalf("Failed to send chunk over stream:%v", err)
+			fmt.Printf("Error al enviar chunk a traves de stream:%v\n", err)
 			return
 		}
 		fmt.Println("Chunk enviado a data node")
@@ -115,19 +116,19 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 
 	status, err = stream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("failed to receive upstream status response:%v", err)
+		fmt.Printf("Error al recibir mensaje de status:%v\n", err)
 		return
 	}
 
 	if status.Codigo != proto.CodigoStatusSubida_Exitoso {
-		log.Fatalf("upload failed - msg:%v", err)
+		fmt.Printf("Error al subir archivo - msg:%v\n", err)
 		return
 	}
 
 	return
 }
 
-func testing(nombre string, direccion string) {
+func testing(nombre string, direccion string) error {
 	//newClient()
 	c, err := newClient(direccion)
 	fileToBeChunked := nombre
@@ -175,9 +176,12 @@ func testing(nombre string, direccion string) {
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 
 		fmt.Println("Split to : ", fileName)
-		c.uploadFile(context.Background(), fileName)
+		err = c.uploadFile(context.Background(), fileName)
+		if err != nil {
+			return err
+		}
 	}
-
+	return nil
 }
 
 func main() {
