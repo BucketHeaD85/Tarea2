@@ -16,9 +16,9 @@ import (
 )
 
 //Direcciones ip relevantes
-var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
 
-//var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
+var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
 //var disponibles = [3]bool{true,true,true}
 

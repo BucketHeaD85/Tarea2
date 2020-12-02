@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package proto;
+
+import "proto/namenode.proto";
+
+message Chunk{
+    oneof data{
+        string nombre = 1;
+        bytes Contenido = 2;
+    }
+}
+
+enum CodigoStatusSubida{
+    Desconocido = 0;
+    Exitoso = 1;
+    Fallido = 2;
+}
+
+message StatusSubida{
+    string Mensaje = 1;
+    CodigoStatusSubida Codigo = 2;
+}
+
+message Setup{
+    int64 numChunks = 1;
+    string titulo = 2;
+}
+
+message Solicitud{
+    string NombreChunk = 1;
+}
+
+message Confirmacion{
+    bool aceptar = 1;
+}
+/*
+message AsignacionD{
+    int64 PosDireccion = 1;
+    int64 NumChunk = 2;
+}
+
+message PropuestaD{
+    repeated AsignacionD asignacion = 1;
+    string titulo = 2; 
+    int64 Nchunks = 3;
+    repeated int64 IdNodo = 4;
+}
+*/
+message Ramessage{
+    int64 clock=1;
+    int64 idDataNode=2;
+}
+
+service ServicioSubida{
+    rpc SubirArchivo(stream Chunk) returns (StatusSubida);
+    rpc DescargarArchivo(Solicitud) returns (stream Chunk);
+    rpc AcusoEnvio(Setup) returns (Setup);
+    rpc ConfirmarPropuesta(Propuesta) returns (Confirmacion);
+    rpc PedirAccesoCritico(Ramessage) returns (Ramessage);
+}

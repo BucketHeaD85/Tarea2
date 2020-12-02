@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.25.0-devel
 // 	protoc        v3.13.0
-// source: datanode.proto
+// source: datanodedist.proto
 
 package proto
 
@@ -57,11 +57,11 @@ func (x CodigoStatusSubida) String() string {
 }
 
 func (CodigoStatusSubida) Descriptor() protoreflect.EnumDescriptor {
-	return file_datanode_proto_enumTypes[0].Descriptor()
+	return file_datanodedist_proto_enumTypes[0].Descriptor()
 }
 
 func (CodigoStatusSubida) Type() protoreflect.EnumType {
-	return &file_datanode_proto_enumTypes[0]
+	return &file_datanodedist_proto_enumTypes[0]
 }
 
 func (x CodigoStatusSubida) Number() protoreflect.EnumNumber {
@@ -70,7 +70,7 @@ func (x CodigoStatusSubida) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CodigoStatusSubida.Descriptor instead.
 func (CodigoStatusSubida) EnumDescriptor() ([]byte, []int) {
-	return file_datanode_proto_rawDescGZIP(), []int{0}
+	return file_datanodedist_proto_rawDescGZIP(), []int{0}
 }
 
 type Chunk struct {
@@ -87,7 +87,7 @@ type Chunk struct {
 func (x *Chunk) Reset() {
 	*x = Chunk{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_datanode_proto_msgTypes[0]
+		mi := &file_datanodedist_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -100,7 +100,7 @@ func (x *Chunk) String() string {
 func (*Chunk) ProtoMessage() {}
 
 func (x *Chunk) ProtoReflect() protoreflect.Message {
-	mi := &file_datanode_proto_msgTypes[0]
+	mi := &file_datanodedist_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -113,7 +113,7 @@ func (x *Chunk) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Chunk.ProtoReflect.Descriptor instead.
 func (*Chunk) Descriptor() ([]byte, []int) {
-	return file_datanode_proto_rawDescGZIP(), []int{0}
+	return file_datanodedist_proto_rawDescGZIP(), []int{0}
 }
 
 func (m *Chunk) GetData() isChunk_Data {
@@ -165,7 +165,7 @@ type StatusSubida struct {
 func (x *StatusSubida) Reset() {
 	*x = StatusSubida{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_datanode_proto_msgTypes[1]
+		mi := &file_datanodedist_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -178,7 +178,7 @@ func (x *StatusSubida) String() string {
 func (*StatusSubida) ProtoMessage() {}
 
 func (x *StatusSubida) ProtoReflect() protoreflect.Message {
-	mi := &file_datanode_proto_msgTypes[1]
+	mi := &file_datanodedist_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -191,7 +191,7 @@ func (x *StatusSubida) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusSubida.ProtoReflect.Descriptor instead.
 func (*StatusSubida) Descriptor() ([]byte, []int) {
-	return file_datanode_proto_rawDescGZIP(), []int{1}
+	return file_datanodedist_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *StatusSubida) GetMensaje() string {
@@ -220,7 +220,7 @@ type Setup struct {
 func (x *Setup) Reset() {
 	*x = Setup{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_datanode_proto_msgTypes[2]
+		mi := &file_datanodedist_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -233,7 +233,7 @@ func (x *Setup) String() string {
 func (*Setup) ProtoMessage() {}
 
 func (x *Setup) ProtoReflect() protoreflect.Message {
-	mi := &file_datanode_proto_msgTypes[2]
+	mi := &file_datanodedist_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,7 +246,7 @@ func (x *Setup) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Setup.ProtoReflect.Descriptor instead.
 func (*Setup) Descriptor() ([]byte, []int) {
-	return file_datanode_proto_rawDescGZIP(), []int{2}
+	return file_datanodedist_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Setup) GetNumChunks() int64 {
@@ -274,7 +274,7 @@ type Solicitud struct {
 func (x *Solicitud) Reset() {
 	*x = Solicitud{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_datanode_proto_msgTypes[3]
+		mi := &file_datanodedist_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -287,7 +287,7 @@ func (x *Solicitud) String() string {
 func (*Solicitud) ProtoMessage() {}
 
 func (x *Solicitud) ProtoReflect() protoreflect.Message {
-	mi := &file_datanode_proto_msgTypes[3]
+	mi := &file_datanodedist_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -300,7 +300,7 @@ func (x *Solicitud) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Solicitud.ProtoReflect.Descriptor instead.
 func (*Solicitud) Descriptor() ([]byte, []int) {
-	return file_datanode_proto_rawDescGZIP(), []int{3}
+	return file_datanodedist_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Solicitud) GetNombreChunk() string {
@@ -310,88 +310,226 @@ func (x *Solicitud) GetNombreChunk() string {
 	return ""
 }
 
-var File_datanode_proto protoreflect.FileDescriptor
+type Confirmacion struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
 
-var file_datanode_proto_rawDesc = []byte{
-	0x0a, 0x0e, 0x64, 0x61, 0x74, 0x61, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x49, 0x0a, 0x05, 0x43, 0x68, 0x75, 0x6e, 0x6b,
-	0x12, 0x18, 0x0a, 0x06, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x48, 0x00, 0x52, 0x06, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x12, 0x1e, 0x0a, 0x09, 0x43, 0x6f,
-	0x6e, 0x74, 0x65, 0x6e, 0x69, 0x64, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x48, 0x00, 0x52,
-	0x09, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x69, 0x64, 0x6f, 0x42, 0x06, 0x0a, 0x04, 0x64, 0x61,
-	0x74, 0x61, 0x22, 0x5b, 0x0a, 0x0c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x53, 0x75, 0x62, 0x69,
-	0x64, 0x61, 0x12, 0x18, 0x0a, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65, 0x12, 0x31, 0x0a, 0x06,
-	0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x19, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x53, 0x74, 0x61, 0x74, 0x75,
-	0x73, 0x53, 0x75, 0x62, 0x69, 0x64, 0x61, 0x52, 0x06, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x22,
-	0x3d, 0x0a, 0x05, 0x53, 0x65, 0x74, 0x75, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x6e, 0x75, 0x6d, 0x43,
-	0x68, 0x75, 0x6e, 0x6b, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x6e, 0x75, 0x6d,
-	0x43, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x69, 0x74, 0x75, 0x6c, 0x6f,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x69, 0x74, 0x75, 0x6c, 0x6f, 0x22, 0x2d,
-	0x0a, 0x09, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x4e,
-	0x6f, 0x6d, 0x62, 0x72, 0x65, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x0b, 0x4e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x2a, 0x3f, 0x0a,
-	0x12, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x53, 0x75, 0x62,
-	0x69, 0x64, 0x61, 0x12, 0x0f, 0x0a, 0x0b, 0x44, 0x65, 0x73, 0x63, 0x6f, 0x6e, 0x6f, 0x63, 0x69,
-	0x64, 0x6f, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x78, 0x69, 0x74, 0x6f, 0x73, 0x6f, 0x10,
-	0x01, 0x12, 0x0b, 0x0a, 0x07, 0x46, 0x61, 0x6c, 0x6c, 0x69, 0x64, 0x6f, 0x10, 0x02, 0x32, 0xa5,
-	0x01, 0x0a, 0x0e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x69, 0x6f, 0x53, 0x75, 0x62, 0x69, 0x64,
-	0x61, 0x12, 0x33, 0x0a, 0x0c, 0x53, 0x75, 0x62, 0x69, 0x72, 0x41, 0x72, 0x63, 0x68, 0x69, 0x76,
-	0x6f, 0x12, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x1a,
-	0x13, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x53, 0x75,
-	0x62, 0x69, 0x64, 0x61, 0x28, 0x01, 0x12, 0x34, 0x0a, 0x10, 0x44, 0x65, 0x73, 0x63, 0x61, 0x72,
-	0x67, 0x61, 0x72, 0x41, 0x72, 0x63, 0x68, 0x69, 0x76, 0x6f, 0x12, 0x10, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2e, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x1a, 0x0c, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x30, 0x01, 0x12, 0x28, 0x0a, 0x0a,
-	0x41, 0x63, 0x75, 0x73, 0x6f, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x12, 0x0c, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2e, 0x53, 0x65, 0x74, 0x75, 0x70, 0x1a, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x53, 0x65, 0x74, 0x75, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	Aceptar bool `protobuf:"varint,1,opt,name=aceptar,proto3" json:"aceptar,omitempty"`
+}
+
+func (x *Confirmacion) Reset() {
+	*x = Confirmacion{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_datanodedist_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Confirmacion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Confirmacion) ProtoMessage() {}
+
+func (x *Confirmacion) ProtoReflect() protoreflect.Message {
+	mi := &file_datanodedist_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Confirmacion.ProtoReflect.Descriptor instead.
+func (*Confirmacion) Descriptor() ([]byte, []int) {
+	return file_datanodedist_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Confirmacion) GetAceptar() bool {
+	if x != nil {
+		return x.Aceptar
+	}
+	return false
+}
+
+//
+//message AsignacionD{
+//int64 PosDireccion = 1;
+//int64 NumChunk = 2;
+//}
+//
+//message PropuestaD{
+//repeated AsignacionD asignacion = 1;
+//string titulo = 2;
+//int64 Nchunks = 3;
+//repeated int64 IdNodo = 4;
+//}
+type Ramessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Clock      int64 `protobuf:"varint,1,opt,name=clock,proto3" json:"clock,omitempty"`
+	IdDataNode int64 `protobuf:"varint,2,opt,name=idDataNode,proto3" json:"idDataNode,omitempty"`
+}
+
+func (x *Ramessage) Reset() {
+	*x = Ramessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_datanodedist_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Ramessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Ramessage) ProtoMessage() {}
+
+func (x *Ramessage) ProtoReflect() protoreflect.Message {
+	mi := &file_datanodedist_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Ramessage.ProtoReflect.Descriptor instead.
+func (*Ramessage) Descriptor() ([]byte, []int) {
+	return file_datanodedist_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Ramessage) GetClock() int64 {
+	if x != nil {
+		return x.Clock
+	}
+	return 0
+}
+
+func (x *Ramessage) GetIdDataNode() int64 {
+	if x != nil {
+		return x.IdDataNode
+	}
+	return 0
+}
+
+var File_datanodedist_proto protoreflect.FileDescriptor
+
+var file_datanodedist_proto_rawDesc = []byte{
+	0x0a, 0x12, 0x64, 0x61, 0x74, 0x61, 0x6e, 0x6f, 0x64, 0x65, 0x64, 0x69, 0x73, 0x74, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0e, 0x6e, 0x61, 0x6d,
+	0x65, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x49, 0x0a, 0x05, 0x43,
+	0x68, 0x75, 0x6e, 0x6b, 0x12, 0x18, 0x0a, 0x06, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x06, 0x6e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x12, 0x1e,
+	0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x69, 0x64, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0c, 0x48, 0x00, 0x52, 0x09, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x69, 0x64, 0x6f, 0x42, 0x06,
+	0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x5b, 0x0a, 0x0c, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x53, 0x75, 0x62, 0x69, 0x64, 0x61, 0x12, 0x18, 0x0a, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x4d, 0x65, 0x6e, 0x73, 0x61, 0x6a, 0x65,
+	0x12, 0x31, 0x0a, 0x06, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e,
+	0x32, 0x19, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x53,
+	0x74, 0x61, 0x74, 0x75, 0x73, 0x53, 0x75, 0x62, 0x69, 0x64, 0x61, 0x52, 0x06, 0x43, 0x6f, 0x64,
+	0x69, 0x67, 0x6f, 0x22, 0x3d, 0x0a, 0x05, 0x53, 0x65, 0x74, 0x75, 0x70, 0x12, 0x1c, 0x0a, 0x09,
+	0x6e, 0x75, 0x6d, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x09, 0x6e, 0x75, 0x6d, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x69,
+	0x74, 0x75, 0x6c, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x69, 0x74, 0x75,
+	0x6c, 0x6f, 0x22, 0x2d, 0x0a, 0x09, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x12,
+	0x20, 0x0a, 0x0b, 0x4e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x4e, 0x6f, 0x6d, 0x62, 0x72, 0x65, 0x43, 0x68, 0x75, 0x6e,
+	0x6b, 0x22, 0x28, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61, 0x63, 0x69, 0x6f,
+	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x63, 0x65, 0x70, 0x74, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x07, 0x61, 0x63, 0x65, 0x70, 0x74, 0x61, 0x72, 0x22, 0x41, 0x0a, 0x09, 0x52,
+	0x61, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x6c, 0x6f, 0x63,
+	0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x63, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x1e,
+	0x0a, 0x0a, 0x69, 0x64, 0x44, 0x61, 0x74, 0x61, 0x4e, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x0a, 0x69, 0x64, 0x44, 0x61, 0x74, 0x61, 0x4e, 0x6f, 0x64, 0x65, 0x2a, 0x3f,
+	0x0a, 0x12, 0x43, 0x6f, 0x64, 0x69, 0x67, 0x6f, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x53, 0x75,
+	0x62, 0x69, 0x64, 0x61, 0x12, 0x0f, 0x0a, 0x0b, 0x44, 0x65, 0x73, 0x63, 0x6f, 0x6e, 0x6f, 0x63,
+	0x69, 0x64, 0x6f, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x78, 0x69, 0x74, 0x6f, 0x73, 0x6f,
+	0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x46, 0x61, 0x6c, 0x6c, 0x69, 0x64, 0x6f, 0x10, 0x02, 0x32,
+	0x9c, 0x02, 0x0a, 0x0e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x69, 0x6f, 0x53, 0x75, 0x62, 0x69,
+	0x64, 0x61, 0x12, 0x33, 0x0a, 0x0c, 0x53, 0x75, 0x62, 0x69, 0x72, 0x41, 0x72, 0x63, 0x68, 0x69,
+	0x76, 0x6f, 0x12, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x68, 0x75, 0x6e, 0x6b,
+	0x1a, 0x13, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x53,
+	0x75, 0x62, 0x69, 0x64, 0x61, 0x28, 0x01, 0x12, 0x34, 0x0a, 0x10, 0x44, 0x65, 0x73, 0x63, 0x61,
+	0x72, 0x67, 0x61, 0x72, 0x41, 0x72, 0x63, 0x68, 0x69, 0x76, 0x6f, 0x12, 0x10, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x6f, 0x6c, 0x69, 0x63, 0x69, 0x74, 0x75, 0x64, 0x1a, 0x0c, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x68, 0x75, 0x6e, 0x6b, 0x30, 0x01, 0x12, 0x28, 0x0a,
+	0x0a, 0x41, 0x63, 0x75, 0x73, 0x6f, 0x45, 0x6e, 0x76, 0x69, 0x6f, 0x12, 0x0c, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x74, 0x75, 0x70, 0x1a, 0x0c, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x53, 0x65, 0x74, 0x75, 0x70, 0x12, 0x3b, 0x0a, 0x12, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x72, 0x6d, 0x61, 0x72, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x12, 0x10, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x75, 0x65, 0x73, 0x74, 0x61, 0x1a,
+	0x13, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61,
+	0x63, 0x69, 0x6f, 0x6e, 0x12, 0x38, 0x0a, 0x12, 0x50, 0x65, 0x64, 0x69, 0x72, 0x41, 0x63, 0x63,
+	0x65, 0x73, 0x6f, 0x43, 0x72, 0x69, 0x74, 0x69, 0x63, 0x6f, 0x12, 0x10, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x52, 0x61, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x10, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x52, 0x61, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_datanode_proto_rawDescOnce sync.Once
-	file_datanode_proto_rawDescData = file_datanode_proto_rawDesc
+	file_datanodedist_proto_rawDescOnce sync.Once
+	file_datanodedist_proto_rawDescData = file_datanodedist_proto_rawDesc
 )
 
-func file_datanode_proto_rawDescGZIP() []byte {
-	file_datanode_proto_rawDescOnce.Do(func() {
-		file_datanode_proto_rawDescData = protoimpl.X.CompressGZIP(file_datanode_proto_rawDescData)
+func file_datanodedist_proto_rawDescGZIP() []byte {
+	file_datanodedist_proto_rawDescOnce.Do(func() {
+		file_datanodedist_proto_rawDescData = protoimpl.X.CompressGZIP(file_datanodedist_proto_rawDescData)
 	})
-	return file_datanode_proto_rawDescData
+	return file_datanodedist_proto_rawDescData
 }
 
-var file_datanode_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_datanode_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_datanode_proto_goTypes = []interface{}{
+var file_datanodedist_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_datanodedist_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_datanodedist_proto_goTypes = []interface{}{
 	(CodigoStatusSubida)(0), // 0: proto.CodigoStatusSubida
 	(*Chunk)(nil),           // 1: proto.Chunk
 	(*StatusSubida)(nil),    // 2: proto.StatusSubida
 	(*Setup)(nil),           // 3: proto.Setup
 	(*Solicitud)(nil),       // 4: proto.Solicitud
+	(*Confirmacion)(nil),    // 5: proto.Confirmacion
+	(*Ramessage)(nil),       // 6: proto.Ramessage
+	(*Propuesta)(nil),       // 7: proto.Propuesta
 }
-var file_datanode_proto_depIdxs = []int32{
+var file_datanodedist_proto_depIdxs = []int32{
 	0, // 0: proto.StatusSubida.Codigo:type_name -> proto.CodigoStatusSubida
 	1, // 1: proto.ServicioSubida.SubirArchivo:input_type -> proto.Chunk
 	4, // 2: proto.ServicioSubida.DescargarArchivo:input_type -> proto.Solicitud
 	3, // 3: proto.ServicioSubida.AcusoEnvio:input_type -> proto.Setup
-	2, // 4: proto.ServicioSubida.SubirArchivo:output_type -> proto.StatusSubida
-	1, // 5: proto.ServicioSubida.DescargarArchivo:output_type -> proto.Chunk
-	3, // 6: proto.ServicioSubida.AcusoEnvio:output_type -> proto.Setup
-	4, // [4:7] is the sub-list for method output_type
-	1, // [1:4] is the sub-list for method input_type
+	7, // 4: proto.ServicioSubida.ConfirmarPropuesta:input_type -> proto.Propuesta
+	6, // 5: proto.ServicioSubida.PedirAccesoCritico:input_type -> proto.Ramessage
+	2, // 6: proto.ServicioSubida.SubirArchivo:output_type -> proto.StatusSubida
+	1, // 7: proto.ServicioSubida.DescargarArchivo:output_type -> proto.Chunk
+	3, // 8: proto.ServicioSubida.AcusoEnvio:output_type -> proto.Setup
+	5, // 9: proto.ServicioSubida.ConfirmarPropuesta:output_type -> proto.Confirmacion
+	6, // 10: proto.ServicioSubida.PedirAccesoCritico:output_type -> proto.Ramessage
+	6, // [6:11] is the sub-list for method output_type
+	1, // [1:6] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_datanode_proto_init() }
-func file_datanode_proto_init() {
-	if File_datanode_proto != nil {
+func init() { file_datanodedist_proto_init() }
+func file_datanodedist_proto_init() {
+	if File_datanodedist_proto != nil {
 		return
 	}
+	file_namenode_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_datanode_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_datanodedist_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Chunk); i {
 			case 0:
 				return &v.state
@@ -403,7 +541,7 @@ func file_datanode_proto_init() {
 				return nil
 			}
 		}
-		file_datanode_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_datanodedist_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StatusSubida); i {
 			case 0:
 				return &v.state
@@ -415,7 +553,7 @@ func file_datanode_proto_init() {
 				return nil
 			}
 		}
-		file_datanode_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_datanodedist_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Setup); i {
 			case 0:
 				return &v.state
@@ -427,7 +565,7 @@ func file_datanode_proto_init() {
 				return nil
 			}
 		}
-		file_datanode_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_datanodedist_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Solicitud); i {
 			case 0:
 				return &v.state
@@ -439,8 +577,32 @@ func file_datanode_proto_init() {
 				return nil
 			}
 		}
+		file_datanodedist_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Confirmacion); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_datanodedist_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Ramessage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
-	file_datanode_proto_msgTypes[0].OneofWrappers = []interface{}{
+	file_datanodedist_proto_msgTypes[0].OneofWrappers = []interface{}{
 		(*Chunk_Nombre)(nil),
 		(*Chunk_Contenido)(nil),
 	}
@@ -448,21 +610,21 @@ func file_datanode_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_datanode_proto_rawDesc,
+			RawDescriptor: file_datanodedist_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_datanode_proto_goTypes,
-		DependencyIndexes: file_datanode_proto_depIdxs,
-		EnumInfos:         file_datanode_proto_enumTypes,
-		MessageInfos:      file_datanode_proto_msgTypes,
+		GoTypes:           file_datanodedist_proto_goTypes,
+		DependencyIndexes: file_datanodedist_proto_depIdxs,
+		EnumInfos:         file_datanodedist_proto_enumTypes,
+		MessageInfos:      file_datanodedist_proto_msgTypes,
 	}.Build()
-	File_datanode_proto = out.File
-	file_datanode_proto_rawDesc = nil
-	file_datanode_proto_goTypes = nil
-	file_datanode_proto_depIdxs = nil
+	File_datanodedist_proto = out.File
+	file_datanodedist_proto_rawDesc = nil
+	file_datanodedist_proto_goTypes = nil
+	file_datanodedist_proto_depIdxs = nil
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -480,6 +642,8 @@ type ServicioSubidaClient interface {
 	SubirArchivo(ctx context.Context, opts ...grpc.CallOption) (ServicioSubida_SubirArchivoClient, error)
 	DescargarArchivo(ctx context.Context, in *Solicitud, opts ...grpc.CallOption) (ServicioSubida_DescargarArchivoClient, error)
 	AcusoEnvio(ctx context.Context, in *Setup, opts ...grpc.CallOption) (*Setup, error)
+	ConfirmarPropuesta(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Confirmacion, error)
+	PedirAccesoCritico(ctx context.Context, in *Ramessage, opts ...grpc.CallOption) (*Ramessage, error)
 }
 
 type servicioSubidaClient struct {
@@ -565,11 +729,31 @@ func (c *servicioSubidaClient) AcusoEnvio(ctx context.Context, in *Setup, opts .
 	return out, nil
 }
 
+func (c *servicioSubidaClient) ConfirmarPropuesta(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Confirmacion, error) {
+	out := new(Confirmacion)
+	err := c.cc.Invoke(ctx, "/proto.ServicioSubida/ConfirmarPropuesta", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *servicioSubidaClient) PedirAccesoCritico(ctx context.Context, in *Ramessage, opts ...grpc.CallOption) (*Ramessage, error) {
+	out := new(Ramessage)
+	err := c.cc.Invoke(ctx, "/proto.ServicioSubida/PedirAccesoCritico", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ServicioSubidaServer is the server API for ServicioSubida service.
 type ServicioSubidaServer interface {
 	SubirArchivo(ServicioSubida_SubirArchivoServer) error
 	DescargarArchivo(*Solicitud, ServicioSubida_DescargarArchivoServer) error
 	AcusoEnvio(context.Context, *Setup) (*Setup, error)
+	ConfirmarPropuesta(context.Context, *Propuesta) (*Confirmacion, error)
+	PedirAccesoCritico(context.Context, *Ramessage) (*Ramessage, error)
 }
 
 // UnimplementedServicioSubidaServer can be embedded to have forward compatible implementations.
@@ -584,6 +768,12 @@ func (*UnimplementedServicioSubidaServer) DescargarArchivo(*Solicitud, ServicioS
 }
 func (*UnimplementedServicioSubidaServer) AcusoEnvio(context.Context, *Setup) (*Setup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AcusoEnvio not implemented")
+}
+func (*UnimplementedServicioSubidaServer) ConfirmarPropuesta(context.Context, *Propuesta) (*Confirmacion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmarPropuesta not implemented")
+}
+func (*UnimplementedServicioSubidaServer) PedirAccesoCritico(context.Context, *Ramessage) (*Ramessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PedirAccesoCritico not implemented")
 }
 
 func RegisterServicioSubidaServer(s *grpc.Server, srv ServicioSubidaServer) {
@@ -655,6 +845,42 @@ func _ServicioSubida_AcusoEnvio_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ServicioSubida_ConfirmarPropuesta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Propuesta)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicioSubidaServer).ConfirmarPropuesta(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.ServicioSubida/ConfirmarPropuesta",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicioSubidaServer).ConfirmarPropuesta(ctx, req.(*Propuesta))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ServicioSubida_PedirAccesoCritico_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Ramessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ServicioSubidaServer).PedirAccesoCritico(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.ServicioSubida/PedirAccesoCritico",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ServicioSubidaServer).PedirAccesoCritico(ctx, req.(*Ramessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _ServicioSubida_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.ServicioSubida",
 	HandlerType: (*ServicioSubidaServer)(nil),
@@ -662,6 +888,14 @@ var _ServicioSubida_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AcusoEnvio",
 			Handler:    _ServicioSubida_AcusoEnvio_Handler,
+		},
+		{
+			MethodName: "ConfirmarPropuesta",
+			Handler:    _ServicioSubida_ConfirmarPropuesta_Handler,
+		},
+		{
+			MethodName: "PedirAccesoCritico",
+			Handler:    _ServicioSubida_PedirAccesoCritico_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -676,5 +910,5 @@ var _ServicioSubida_serviceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "datanode.proto",
+	Metadata: "datanodedist.proto",
 }

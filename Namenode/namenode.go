@@ -19,9 +19,9 @@ import (
 )
 
 //Parametros para la gestion de conexiones
-var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+//var direcciones = [3]string{"10.6.40.246:50053", "10.6.40.247:50053", "10.6.40.248:50053"}
+var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 
-//var direcciones = [3]string{"localhost:50052", "localhost:50053", "localhost:50054"}
 var flags = [3]bool{true, true, true}
 
 //Variables de control
@@ -34,6 +34,7 @@ var cola []int
 //Coordinador para la sincronizacion del Acceso en el archivo log
 var mutexAcceso = &sync.Mutex{}
 var condAcceso = sync.NewCond(mutexAcceso)
+
 
 type server struct{}
 
@@ -96,6 +97,7 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 	time.Sleep(1 * time.Second)
 	titulo := request.GetTitulo()
 
+	
 	f, err := os.OpenFile("./Log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
@@ -114,7 +116,7 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 		current := request.GetAsignacion()[i].PosDireccion
 		//fmt.Println("Current proposal:" + direcciones[current])
 		pos := verificarDataNode(current)
-		request.GetAsignacion()[i].PosDireccion = pos
+		request.GetAsignacion()[i].PosDireccion = pos//esto funciona?
 		fmt.Println(direcciones[pos])
 		f.WriteString("Chunk " + strconv.Itoa(i+1) + ": " + direcciones[pos] + "\n")
 	}
@@ -187,6 +189,7 @@ func (server *server) VerLibros(ctx context.Context, request *proto.Request) (*p
 		}
 	*/
 	fmt.Println("Client Downloader conectado")
+
 	archivo, err := os.Open("Log.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -216,6 +219,7 @@ func (server *server) VerLibros(ctx context.Context, request *proto.Request) (*p
 }
 
 func (server *server) SolicitarChunks(ctx context.Context, request *proto.Libro) (*proto.Propuesta, error) {
+
 	archivo, err := os.Open("Log.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -309,4 +313,34 @@ func leerLog() error {
 	numLibros = i
 	fmt.Println("Log leido: " + strconv.Itoa(numLibros) + " libros encontrados")
 	return nil
+}
+
+func (server *server) EnviarDistribucion(ctx context.Context, request *proto.Propuesta) (*proto.Propuesta, error) {
+	
+	time.Sleep(1 * time.Second)
+	titulo := request.GetTitulo()
+
+	f, err := os.OpenFile("./Log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	_, err = f.WriteString(titulo + " " + strconv.FormatInt(request.GetNchunks(), 10) + "\n")
+	if err != nil {
+		panic(err)
+	}
+
+	n := len(request.GetAsignacion())
+
+	for i := 0; i < n; i++ {
+		current := request.GetAsignacion()[i].PosDireccion
+		//fmt.Println("Current proposal:" + direcciones[current])
+		fmt.Println(direcciones[current])
+		f.WriteString("Chunk " + strconv.Itoa(i+1) + ": " + direcciones[current] + "\n")
+	}
+	fmt.Println("Done")
+	numLibros++
+	return request, nil
 }
