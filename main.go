@@ -128,7 +128,7 @@ func (c *clientGRPC) uploadFile(ctx context.Context, f string) (err error) {
 	return
 }
 
-func testing(nombre string, direccion string) {
+func testing(nombre string, direccion string) error {
 	//newClient()
 	c, err := newClient(direccion)
 	fileToBeChunked := nombre
@@ -176,9 +176,12 @@ func testing(nombre string, direccion string) {
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 
 		fmt.Println("Split to : ", fileName)
-		c.uploadFile(context.Background(), fileName)
+		err = c.uploadFile(context.Background(), fileName)
+		if err != nil {
+			return err
+		}
 	}
-
+	return nil
 }
 
 func main() {

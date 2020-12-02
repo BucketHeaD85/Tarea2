@@ -119,7 +119,12 @@ func main() {
 
 		nChunk := mapa.GetAsignacion()[i].NumChunk - 1
 		nombre := titulo + "_" + strconv.FormatInt(nChunk, 10)
-		clienteDataNode, _, _ := conectar(direcciones[nodo], 0)
+		clienteDataNode, _, err := conectar(direcciones[nodo], 0)
+		if err != nil {
+			fmt.Printf("Error al conectar al datanode de direccion %v - %v\n", direcciones[nodo], err)
+			fmt.Printf("El libro no pudo ser descargado. Terminando operacion.\n")
+			break
+		}
 		pedido := proto.Solicitud{NombreChunk: nombre}
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()

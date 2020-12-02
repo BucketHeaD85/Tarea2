@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"../proto"
 	"google.golang.org/grpc"
@@ -233,6 +234,7 @@ func (c *clientGRPC) distribuirChunks(ctx context.Context, f string) (err error)
 }
 
 func generarPropuesta(numChunks int64) error {
+	defer timeTrack(time.Now(), eleccion)
 	asignaciones := make([]*proto.Asignacion, numChunks)
 	//fmt.Println("NumeroChunks:", numChunks)
 	pos := int64(-1)
@@ -384,4 +386,9 @@ func (server *server) DescargarArchivo(request *proto.Solicitud, stream proto.Se
 
 	return nil
 
+}
+
+func timeTrack(start time.Time, name int) {
+	elapsed := time.Since(start)
+	log.Printf("El nodo %d tardó %s segundos en completar su solicitud de acceso y escritura al log", name, elapsed)
 }

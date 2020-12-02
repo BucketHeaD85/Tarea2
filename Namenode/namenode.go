@@ -94,7 +94,6 @@ func (server *server) Confirmar(ctx context.Context, request *proto.Propuesta) (
 	asignacion[0].PosDireccion = 0
 	asignacion[0].NumChunk = 1
 	*/
-	defer timeTrack(time.Now(), int(request.GetIdNodo()))
 	//time.Sleep(1 * time.Second)
 	titulo := request.GetTitulo()
 	nMensajes := int64(2) // Se cuenta el mensaje de ida y vuelta entre data node y namenode
@@ -328,9 +327,4 @@ func leerLog() error {
 	logListo = true
 	fmt.Println("Log leido: " + strconv.Itoa(numLibros) + " libros encontrados")
 	return nil
-}
-
-func timeTrack(start time.Time, name int) {
-	elapsed := time.Since(start)
-	log.Printf("El nodo %d tardó %s segundos en completar su solicitud de acceso y escritura al log", name, elapsed)
 }
